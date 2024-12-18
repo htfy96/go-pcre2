@@ -15,14 +15,14 @@ Perl Compatible Regular Expressions (PCRE).
 Install the package for Debian as follows:
 
     sudo apt-get install libpcre2-dev
-    go get github.com/htfy96/go-pcre2
+    go get github.com/htfy96/go-pcre2/v2
 
 ## Usage
 
 Go programs that depend on this package should import
 this package as follows to allow automatic downloading:
 
-    import "github.com/htfy96/go-pcre2"
+    import "github.com/htfy96/go-pcre2/v2"
 
 ## History
 
