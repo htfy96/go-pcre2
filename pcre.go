@@ -99,7 +99,6 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
-	"runtime"
 	"sync"
 	"unsafe"
 )
@@ -547,7 +546,6 @@ func (re *Regexp) matchDataCreate() (result *matchData) {
 		Cap:  2 * oveccount,
 	}
 	result.ovector = *(*[]C.PCRE2_SIZE)(unsafe.Pointer(&ovecHead))
-	runtime.SetFinalizer(result, finalizeMatchData)
 	return
 }
 
@@ -588,7 +586,6 @@ func Compile(pattern string, flags uint32) (*Regexp, error) {
 		Pattern: pattern,
 		ptr:     ptr,
 	}
-	runtime.SetFinalizer(re, finalizeRegex)
 	return re, nil
 }
 
@@ -671,7 +668,6 @@ func (re *Regexp) Free() error {
 		return nil
 	}
 	finalizeRegex(re)
-	runtime.SetFinalizer(re, nil)
 	return nil
 }
 
@@ -823,7 +819,6 @@ func (m *Matcher) exec(subjectptr *C.char, length int, flags uint32) int {
 // Free releases the underlying C resources
 func (m *Matcher) Free() {
 	if m.mData != nil {
-		runtime.SetFinalizer(m.mData, nil)
 		finalizeMatchData(m.mData)
 		m.mData = nil
 	}
